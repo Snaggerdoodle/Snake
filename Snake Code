@@ -1,0 +1,94 @@
+let headX = 100;
+let headY = 200;
+let dirX = 10;
+let dirY = 0;
+let bodyX = [100, 100];
+let bodyY = [200, 200];
+let appleX = 300;
+let appleY = 200;
+
+
+function setup() {
+  createCanvas(400, 400);
+  frameRate(6);
+}
+
+function draw() {
+  background(10);
+  
+  noStroke();
+  fill(0, 225, 0);
+  rect(headX, headY, 10, 10);
+  
+  headX += dirX
+  headY += dirY
+  
+  if (headX == 400) {
+  	headX = 0;
+  }else if (headX == -10) {
+  	headX = 390;
+  }else if (headY == 400) {
+  	headY = 0;
+  }else if (headY == -10) {
+  	headY = 390;
+  }
+  
+  keyPressed();
+  grow();
+  noStroke();
+  fill(255, 0, 0);
+	rect(appleX, appleY, 10, 10);
+}
+
+function keyPressed(){
+	if (keyCode === LEFT_ARROW) {
+		dirX = -10
+    dirY = 0
+  }
+  else if (keyCode === RIGHT_ARROW) {
+    dirX = 10
+    dirY = 0
+  }
+  else if (keyCode === UP_ARROW) {
+    dirX = 0
+    dirY = -10
+  }
+  else if (keyCode === DOWN_ARROW) {
+    dirX = 0
+    dirY = 10
+  }
+}
+
+function grow() {
+	bodyX.unshift(headX);
+  bodyY.unshift(headY);
+  if (headX !== appleX || headY !== appleY) {
+  	bodyX.pop();
+ 	  bodyY.pop();
+  }
+  if (headX == appleX && headY == appleY) {
+  	apple();
+  }
+  
+  for (let i=0; i < bodyX.length; i++) {
+    noStroke();
+    fill(220);
+  	rect(bodyX[i + 1], bodyY[i + 1], 10, 10);
+    
+    if (headX == bodyX[i + 1] && headY == bodyY[i + 1]) {
+        death();
+    }
+  }
+}
+
+function apple() {
+	appleX = Math.floor(Math.random()*40) * 10;
+  appleY = Math.floor(Math.random()*40) * 10;
+}
+
+function death() {
+	noLoop();
+  textSize(75);
+  fill(200, 30, 30);
+  text('Game Over', 100, 150, 300, 200);
+}
